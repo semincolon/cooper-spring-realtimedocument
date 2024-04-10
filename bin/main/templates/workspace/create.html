@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cooper</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/style.css}">
+</head>
+<body>
+    <div class="container">
+        <div class="content">
+            <h1>워크스페이스 생성</h1>
+            <h2 th:text="${uName}"></h2>
+            <form action="/workspace/create-complete" method="post">
+                <label for="nameInput">워크스페이스 이름 :</label>
+                <input type="text" id="nameInput" name="wName" minlength="1" maxlength="10" required>
+                <input type="hidden" name="uName" th:value="${uName}">
+                <button type="submit" id="selectWorkspaceBtn">워크스페이스 생성</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

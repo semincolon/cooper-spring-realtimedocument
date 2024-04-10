@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cooper</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/style.css}">
+</head>
+<body>
+    <div class="container">
+        <div class="content">
+            <h1>Cooper에 오신 것을 환영합니다</h1>
+            <form action="/selectWorkspace" method="post">
+                <label for="nameInput">사용할 이름을 입력하세요:</label>
+                <input type="text" id="nameInput" name="name" minlength="1" maxlength="3" required>
+                <button type="submit" id="selectWorkspaceBtn">워크스페이스 선택</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
