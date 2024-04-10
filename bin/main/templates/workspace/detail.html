@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cooper</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/style.css}">
+</head>
+<body>
+	<div class=container style="width: 800px">
+		<div class=content>
+			<h1 th:text="${workspace.name}"></h1>
+			<h3 th:text="|생성자 : ${workspace.generator}|"></h3>
+			<h5>Workspace Members :</h5>
+			<ul>
+                <!-- User 모델의 리스트인 workspace.members를 순회하며 모든 멤버를 출력 -->
+                <li th:each="member : ${workspace.member}" th:text="${member.name}"></li>
+            </ul>
+		</div>
+	</div>
+</body>
+</html>

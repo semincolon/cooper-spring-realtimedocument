@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cooper</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/style.css}">
+</head>
+<body>
+    <div class="container">
+        <div class="content">
+        	<form id="leave-form" action="/leave" method="post">
+			    <input type="hidden" name="name"th:value=${user.name}>
+			    <button type="submit" id="leave-button">회원탈퇴</button>
+			</form>
+            <h1 th:text="|${user.name}님, 환영합니다!|"></h1>
+            <form id="create-form" action="/workspace/create" method="post">
+			    <input type="hidden" name="uName"th:value=${user.name}>
+			    <button type="submit" id="create-button">워크스페이스 생성</button>
+			</form>
+            <p>입장할 워크스페이스를 선택하세요:</p>
+            <div class="workspace-selection">
+                <form th:action="@{|/workspace/list/${workspace.name}|}" th:each="workspace : ${workspaceList}" method="post">
+                	<input type="hidden" name="uName" th:value=${user.name}>
+                    <button th:utext="|${workspace.name} - by ${workspace.generator} <br>member: ${workspace.member.size()}|"></button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
