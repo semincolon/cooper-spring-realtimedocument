@@ -22,7 +22,7 @@
             <div class="workspace-selection">
                 <form th:action="@{|/workspace/list/${workspace.name}|}" th:each="workspace : ${workspaceList}" method="post">
                 	<input type="hidden" name="userId" th:value=${user.id}>
-                    <button th:utext="|${workspace.name} - by ${workspace.generator.name} <br>member: ${workspace.member.size()}|"></button>
+                    <button th:utext="|${workspace.name} - by ${workspace.generator.name}|"></button>
                 </form>
             </div>
         </div>

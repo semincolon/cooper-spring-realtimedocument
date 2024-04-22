@@ -5,9 +5,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
 import com.realtimedocument.demo.model.TextMessage;
-import com.realtimedocument.demo.model.User;
 import com.realtimedocument.demo.model.Workspace;
-import com.realtimedocument.demo.service.UserService;
 import com.realtimedocument.demo.service.WorkspaceService;
 
 import lombok.RequiredArgsConstructor;
@@ -46,7 +44,7 @@ public class StompController {
 		workspaceService.changeOnlineMember(message.getWorkspaceName(), message.getUser().getId(), false);
 		
 		Workspace workspace = workspaceService.getWorkspace(message.getWorkspaceName());
-		workspaceService.deleteMember(workspace, message.getUser());
+		workspaceService.deleteMember(workspace, message.getUser().getId());
 		
 		message.setTotalMembers(workspace.getMember());
 		message.setOnlineMembers(workspace.getOnlineMembers());
