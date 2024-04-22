@@ -17,10 +17,10 @@ import lombok.Setter;
 public class Workspace {
 
 	@Id
-	public String name;
-	public User generator;
-	public List<User> member;
-	public List<String> onlineMembers;
+	private String name;
+	private User generator;
+	private List<User> member;
+	private List<String> onlineMembers;
 	
 	@Builder
 	public Workspace(String name, User generator, List<User> member, List<String> onlineMembers) {

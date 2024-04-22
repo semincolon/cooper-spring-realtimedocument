@@ -1,6 +1,7 @@
 package com.realtimedocument.demo.service;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 public class WorkspaceService {
 
 	private final WorkspaceRepository workspaceRepository;
+	private final UserService userService;
 	
 	// 전체 워크스페이스 리스트 조회하여 리턴
 	public List<Workspace> getWorkspaceList() {
@@ -50,9 +52,15 @@ public class WorkspaceService {
 	}
 	
 	// 나간 멤버 삭제
-	public void deleteMember(Workspace workspace, User user) {
-		Workspace existingWorkspace = workspaceRepository.findByName(workspace.getName());
-		existingWorkspace.getMember().remove(user);
+	public void deleteMember(Workspace workspace, String userId) {
+		Iterator<User> iterator = workspace.getMember().iterator();
+		while (iterator.hasNext()) {
+		    User member = iterator.next();
+		    if (member.getId().equals(userId)) {
+		        iterator.remove();
+		        break;
+		    }
+		}
 		workspaceRepository.save(workspace);
 	}
 	
