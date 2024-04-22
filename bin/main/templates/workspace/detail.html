@@ -88,17 +88,9 @@
 		
 		// 현재 접속중인 유저는 초록색, 아닌 유저는 빨간색으로 표시하는 메소드
 		function checkOnlineMember() {
-			/* onlineMembers.forEach((memberId) => {
-				$("#"+memberId).css("background-color", "lime");
-			});
-			
-			if (outMember) {
-				$("#"+memberId).css("background-color", "red");
-			} */
 			var membersHTML = '';
 			totalMembers.forEach((member) => {
 				var backgroundColor = onlineMembers.includes(member.id) ? 'lime' : 'red';
-				console.log(backgroundColor);
 				membersHTML += 
 					'<div id="' + member.id + '" class="circle" style="background-color: ' + backgroundColor + ';"></div>' +
 	                '<p th:text="${member.name}" style="margin: 0;">' + member.name + '</p>';
