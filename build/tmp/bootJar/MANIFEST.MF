@@ -1,13 +1,12 @@
 Manifest-Version: 1.0
-Spring-Boot-Native-Processed: true
 Main-Class: org.springframework.boot.loader.launch.JarLauncher
-Start-Class: com.example.demo.MyHelloApplication
-Spring-Boot-Version: 3.2.4
+Start-Class: com.realtimedocument.demo.RealtimeDocumentApplication
+Spring-Boot-Version: 3.2.5
 Spring-Boot-Classes: BOOT-INF/classes/
 Spring-Boot-Lib: BOOT-INF/lib/
 Spring-Boot-Classpath-Index: BOOT-INF/classpath.idx
 Spring-Boot-Layers-Index: BOOT-INF/layers.idx
 Build-Jdk-Spec: 17
-Implementation-Title: myHello
+Implementation-Title: RealtimeDocument
 Implementation-Version: 0.0.1-SNAPSHOT
 
