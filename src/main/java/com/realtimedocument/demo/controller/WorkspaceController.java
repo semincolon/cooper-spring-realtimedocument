@@ -29,6 +29,7 @@ public class WorkspaceController {
 	@RequestMapping("/list")
 	public String list(@ModelAttribute User user, Model model) {
 		userService.checkUser(user); // 유저가 있는지 없는지 확인
+		
 		List<Workspace> workspaceList = workspaceService.getWorkspaceList();
 		model.addAttribute("user", user);
 		model.addAttribute("workspaceList", workspaceList);		
@@ -52,10 +53,10 @@ public class WorkspaceController {
 	
 	@PostMapping("/list/{wName}")
 	public String detail(@PathVariable("wName") String wName, @RequestParam("userId") String userId, Model model) {
-		workspaceService.changeOnlineMember(wName, userId, true);
-		
 		Workspace workspace = workspaceService.getWorkspace(wName);
 		User user = userService.getUser(userId);		
+		
+		workspaceService.changeOnlineMember(workspace, userId, true);
 		
 		// 워크스페이스에 들어가려는 멤버가 구성원에 추가되어 있지 않다면 추가
 		boolean present = false;
