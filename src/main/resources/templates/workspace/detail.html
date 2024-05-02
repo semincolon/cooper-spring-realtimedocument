@@ -15,12 +15,12 @@
 			<form id="out-form" action="/workspace/list" method="post">
 			    <input type="hidden" name="id" th:value=${user.id}>
 			    <input type="hidden" name="name" th:value=${user.name}>
-			    <button type="submit" id="leave-button" onclick="out('leave')">돌아가기</button>
+			    <button type="submit" id="leave-button" onclick="quit()">돌아가기</button>
 			</form>
 			<form id="out-form" action="/workspace/list" method="post">
 			    <input type="hidden" name="id" th:value=${user.id}>
 			    <input type="hidden" name="name" th:value=${user.name}>
-			    <button type="submit" id="leave-button" onclick="out('out')">워크스페이스 나가기</button>
+			    <button type="submit" id="leave-button" onclick="out()">워크스페이스 나가기</button>
 			</form>
 			<h1 th:text="${workspace.name}"></h1>
 			<h3 th:text="|생성자 : ${workspace.generator.name}|"></h3>
@@ -41,11 +41,11 @@
 				padding: 10px;
 				border: 2px solid #000;
 				border-radius: 20px;">
-				<!-- <div id="block1" class="block" contenteditable='true' onfocus="startEdit(this)" onblur="endEdit(this)">여기에 입력</div>
+				<div id="block1" class="block" contenteditable='true' onfocus="startEdit(this)" onblur="endEdit(this)">여기에 입력</div>
 				<div id="block2" class="block" contenteditable='true' onfocus="startEdit(this)" onblur="endEdit(this)">여기에 입력</div>
 				<div id="block3" class="block" contenteditable='true' onfocus="startEdit(this)" onblur="endEdit(this)">여기에 입력</div>
 				<div id="block4" class="block" contenteditable='true' onfocus="startEdit(this)" onblur="endEdit(this)">여기에 입력</div>
-				<div id="block5" class="block" contenteditable='true' onfocus="startEdit(this)" onblur="endEdit(this)">여기에 입력</div> -->
+				<div id="block5" class="block" contenteditable='true' onfocus="startEdit(this)" onblur="endEdit(this)">여기에 입력</div>
 			</div>
 		</div>
 	</div>
@@ -53,47 +53,34 @@
 	<script th:inline="javascript"> 
 		// 페이지가 로드되면 document에 각 블록을 추가
 		window.onload = function() {
-			var documentDiv = $("#document");
-			var textBlocks = [[${workspace.textBlocks}]];
+			/* var documentDiv = document.getElementById("document");
 			
-			for (let i=0 ; i<textBlocks.length ; i++) {
+			for (let i=0 ; i<5 ; i++) {
 				// 각 block이 랜덤한 고유 id를 가지도록 한다.
-				// let randomId = Math.random().toString(36).substr(2, 16);
+				let randomId = Math.random().toString(36).substr(2, 16);
 				
 				// block 생성
-				/* let newBlock = document.createElement("div");
-				newBlock.id = textBlocks[i].id;
+				let newBlock = document.createElement("div");
+				newBlock.id = randomId;
 				newBlock.contentEditable = true;
-				newBlock.innerText = textBlocks[i].text;
+				newBlock.innerText = "여기에 입력";
+			
+				// 스타일 속성 추가
+	            newBlock.style.padding = "10px";
+	            newBlock.style.margin = "5px 10px";
+	            newBlock.style.border = "1px solid #888";
+	            newBlock.style.alignContent = "center";
 	            
-	            // 함수 추가(focus, blur)
+	            // 함수 추가(mouseover, focus, blur)
+	            newBlock.setAttribute("onmouseover", "cursorOn(this)");
+	            newBlock.setAttribute("onmouseleave", "cursorOff(this)");
 	            newBlock.setAttribute("onfocus", "startEdit(this)");
 	            newBlock.setAttribute("onblur", "endEdit(this)");
 				
 				// 생성한 블록을 document div에 추가
-				documentDiv.appendChild(newBlock); */
-				
-				// 위 내용을 jQuery 문법으로 재작성
-				$('#document').append(
-					$('<div>')
-					.attr({
-						id: textBlocks[i].id,
-						class: 'block',
-						contentEditable: `${textBlocks[i].contentEditable}`,
-						onfocus: 'startEdit(this)',
-						onblur: 'endEdit(this)'
-					})
-					.text(textBlocks[i].text)
-					.css('backgroundColor', (textBlocks[i].contentEditable) ? "white" : "#ff8484")
-				);
-			}
+				documentDiv.appendChild(newBlock);
+			} */
 		}
-		
-		// 페이지 뒤로가기 또는 새로고침이 되었을 때 호출할 함수 설정
-		window.addEventListener('beforeunload', () => {
-			out('leave'); // 뒤로가기를 누르면 온라인 멤버가 아닌 것으로 바뀜
-		})
-		
 		var workspaceName = [[${workspace.name}]];
 		var user = [[${user}]];
 		var totalMembers;
@@ -111,31 +98,23 @@
 				totalMembers = content.totalMembers;
 				onlineMembers = content.onlineMembers;
 				
-				
-				
 				// 블록을 편집하는 경우에는 이 부분을 실행
-				if (content.message == "true" || content.message == "false") {
-					var block = $('#' + content.blockId);	
-					if (content.message == 'false') { // 편집 시작하는 경우 이 부분 실행
+				if (content.blockId) {
+					var block = $('#' + content.blockId);
+					
+					if (!content.text) { // 편집 시작하는 경우 이 부분 실행
 						if (content.user.id != user.id) {
 							block.css('backgroundColor', '#ff8484');
 							block.css('border', '2px solid red');
-							block.prop('contentEditable', content.message);
+							block.prop('contentEditable', 'false');
 						}	
 					} else { // 편집 끝내는 경우 이 부분 실행
 						block.css('backgroundColor', 'white');
 						block.css('border', '1px solid #888');
-						block.prop('contentEditable', content.message);
+						block.prop('contentEditable', 'true');
 						block.text(content.text);
 					}
 				} else { 
-					if (content.blockId) {
-						var block = $('#' + content.blockId);
-						block.css('backgroundColor', 'white');
-						block.css('border', '1px solid #888');
-						block.prop('contentEditable', 'true');
-					}
-					
 					// 텍스트 입력이 아닌, 워크스페이스 입퇴장에 대한 경우에는 이 부분을 실행
 					var now = new Date();
 		            var date = now.toLocaleDateString(); // 현재 날짜를 가져옵니다.
@@ -152,12 +131,20 @@
 			stomp.send("/pub/workspace/enter", {}, JSON.stringify({workspaceName: workspaceName, user: user}));
 		});
 		
-		// '돌아가기' 또는 '워크스페이스 나가기' 버튼 누르면 실행되는 메서드
-		function out(status) {
+		// '돌아가기' 버튼 누르면 실행되는 메서드
+		function quit() {
 			var ws = stomp.ws;
-			stomp.send("/pub/workspace/out", {}, JSON.stringify({workspaceName: workspaceName, user: user, message: status}));
+			stomp.send("/pub/workspace/quit", {}, JSON.stringify({workspaceName: workspaceName, user: user}));
 			ws.close();
-		}		
+		}
+		
+		// '워크스페이스 나가기' 버튼 누르면 실행되는 메서드
+		function out() {
+			var ws = stomp.ws;
+			stomp.send("/pub/workspace/out", {}, JSON.stringify({workspaceName: workspaceName, user: user}));
+			ws.close();
+		}
+		
 		
 		// 현재 접속중인 유저는 초록색, 아닌 유저는 빨간색으로 표시하는 메소드
 		function checkOnlineMember() {
@@ -179,13 +166,15 @@
 			el.style.border = '2px solid red';
 			
 			// 다른 유저는 이 블록을 편집할 수 없도록 하기 위해 웹소켓 메시지 전송
-			stomp.send("/pub/workspace/editTextBlock", {}, JSON.stringify({workspaceName: workspaceName, user: user, message: "false", blockId: el.id}));
+			stomp.send("/pub/workspace/startEdit", {}, JSON.stringify({workspaceName: workspaceName, user: user, blockId: el.id}));
 		}
-		
 		// 편집이 끝났을 때 다시 원래 배경 색으로 변경하는 함수
 		function endEdit(el) {
+			/* el.style.backgroundColor = 'white';
+			el.style.border = "1px solid #888";
+			console.log("ENDEDIT!!!: " + el.id); */
 			// 편집이 끝난 후에는 다른 유저도 이 블록을 편집할 수 있도록 메시지 전송
-			stomp.send('/pub/workspace/editTextBlock', {}, JSON.stringify({workspaceName: workspaceName, user: user, message: "true", blockId: el.id, text: el.innerText}));
+			stomp.send('/pub/workspace/endEdit', {}, JSON.stringify({workspaceName: workspaceName, user: user, blockId: el.id, text: el.innerText}));
 		}
 	</script>
 </body>

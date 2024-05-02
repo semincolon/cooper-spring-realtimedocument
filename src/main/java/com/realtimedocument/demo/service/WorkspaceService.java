@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.realtimedocument.demo.model.TextBlock;
 import com.realtimedocument.demo.model.User;
 import com.realtimedocument.demo.model.Workspace;
 import com.realtimedocument.demo.repository.WorkspaceRepository;
@@ -18,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 public class WorkspaceService {
 
 	private final WorkspaceRepository workspaceRepository;
+	private final UserService userService;
 	
 	// 전체 워크스페이스 리스트 조회하여 리턴
 	public List<Workspace> getWorkspaceList() {
@@ -31,24 +31,13 @@ public class WorkspaceService {
 	
 	// 워크스페이스 생성
 	public void createWorkspace(String wName, User user) {
-	    List<TextBlock> initialTextBlocks = new ArrayList<>();
-	    for (int i = 1; i <= 5; i++) {
-	        TextBlock textBlock = TextBlock.builder()
-	        		.id("block" + i)
-	        		.contentEditable(true)
-	        		.build();
-	        
-	        initialTextBlocks.add(textBlock);
-	    }
-
-	    Workspace entity = Workspace.builder()
-	            .name(wName)
-	            .generator(user)
-	            .member(new ArrayList<>())
-	            .onlineMembers(new ArrayList<>())
-	            .textBlocks(initialTextBlocks) // 초기값 설정
-	            .build();
-	    workspaceRepository.save(entity);
+		Workspace entity = Workspace.builder()
+				.name(wName)
+				.generator(user)
+				.member(new ArrayList<>())
+				.onlineMembers(new ArrayList<>())
+				.build();
+		workspaceRepository.save(entity);
 	}
 	
 	// 변경 내용 저장
@@ -76,58 +65,22 @@ public class WorkspaceService {
 	}
 	
 	// 온라인 멤버 변경
-	public void changeOnlineMember(Workspace workspace, String userId, Boolean add) {		
+	public void changeOnlineMember(String workspaceName, String userId, Boolean add) {
+		Workspace existingWorkspace = workspaceRepository.findByName(workspaceName);
+		
 		if (add == true) {
 			// 접속하는 요청이면 온라인 멤버에 추가
-			if (!workspace.getOnlineMembers().contains(userId)) {
-				workspace.getOnlineMembers().add(userId);
+			if (!existingWorkspace.getOnlineMembers().contains(userId)) {
+				existingWorkspace.getOnlineMembers().add(userId);
 			}
 		} else {
 			// 나가는 요청이면 온라인 멤버에서 제거
-			if (workspace.getOnlineMembers().contains(userId)) {
-				workspace.getOnlineMembers().remove(userId);
+			if (existingWorkspace.getOnlineMembers().contains(userId)) {
+				existingWorkspace.getOnlineMembers().remove(userId);
 			}
 		}
 		
 		// DB에 반영
-		workspaceRepository.save(workspace);
-	}
-	
-	
-	// TextBlock의 text값 수정
-	public String editTextBlock(Workspace workspace, String editorId, String blockId, String text, String contentEditable) {
-		if (contentEditable.equals("reset")) {
-			for (TextBlock textBlock : workspace.getTextBlocks()) {
-				if (textBlock.getEditorId() != null) {
-					if (textBlock.getEditorId().equals(editorId)) {
-						textBlock.setEditorId("");
-						textBlock.setContentEditable(true);
-						workspaceRepository.save(workspace);
-						return textBlock.getId();
-					}
-				}
-			}
-		}
-		
-		for (TextBlock textBlock : workspace.getTextBlocks()) {
-			if (textBlock.getId().equals(blockId)) {
-				
-				// contentEditable == 'true' : 편집 종료, contentEditable == 'false' : 편집 시작
-				if (contentEditable.equals("true")) {
-					textBlock.setText(text);
-					textBlock.setEditorId("");
-					textBlock.setContentEditable(true);
-				} else {
-					textBlock.setEditorId(editorId);
-					textBlock.setContentEditable(false);
-				}
-				
-				break;
-			}
-		}
-		
-		// DB에 반영
-		workspaceRepository.save(workspace);
-		return "";
+		workspaceRepository.save(existingWorkspace);
 	}
 }

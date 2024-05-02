@@ -21,14 +21,12 @@ public class Workspace {
 	private User generator;
 	private List<User> member;
 	private List<String> onlineMembers;
-	private List<TextBlock> textBlocks;
 	
 	@Builder
-	public Workspace(String name, User generator, List<User> member, List<String> onlineMembers, List<TextBlock> textBlocks) {
+	public Workspace(String name, User generator, List<User> member, List<String> onlineMembers) {
 		this.name = name;
 		this.generator = generator;
 		this.member = member;
 		this.onlineMembers = onlineMembers;
-		this.textBlocks = textBlocks;
 	}
 }

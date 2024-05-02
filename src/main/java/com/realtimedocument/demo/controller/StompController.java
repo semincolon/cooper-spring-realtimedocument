@@ -27,19 +27,25 @@ public class StompController {
 		messageTemplate.convertAndSend("/sub/workspace/" + message.getWorkspaceName(), message);
 	}
 	
-	@MessageMapping("/workspace/out")
-	public void out(TextMessage message) {
+	@MessageMapping("/workspace/quit")
+	public void quit(TextMessage message) {
+		workspaceService.changeOnlineMember(message.getWorkspaceName(), message.getUser().getId(), false);
+		
 		Workspace workspace = workspaceService.getWorkspace(message.getWorkspaceName());
 		
-		workspaceService.changeOnlineMember(workspace, message.getUser().getId(), false);
-		String blockId = workspaceService.editTextBlock(workspace, message.getUser().getId(), "", "", "reset");
+		message.setTotalMembers(workspace.getMember());
+		message.setOnlineMembers(workspace.getOnlineMembers());
+		message.setMessage(message.getUser().getName() + "님이 " + message.getWorkspaceName() + " - 오프라인 \n");
+		messageTemplate.convertAndSend("/sub/workspace/" + message.getWorkspaceName(), message);
+	}
+	
+	@MessageMapping("/workspace/out")
+	public void out(TextMessage message) {
+		workspaceService.changeOnlineMember(message.getWorkspaceName(), message.getUser().getId(), false);
 		
-		if (message.getMessage().equals("out")) {
-			workspaceService.deleteMember(workspace, message.getUser().getId());	
-		}
+		Workspace workspace = workspaceService.getWorkspace(message.getWorkspaceName());
+		workspaceService.deleteMember(workspace, message.getUser().getId());
 		
-		message.setText("reset");
-		message.setBlockId(blockId);
 		message.setTotalMembers(workspace.getMember());
 		message.setOnlineMembers(workspace.getOnlineMembers());
 		message.setMessage(message.getUser().getName() + "님이 " + message.getWorkspaceName() + "에서 나갔습니다. \n");
@@ -47,11 +53,13 @@ public class StompController {
 	}
 	
 	
-	@MessageMapping("/workspace/editTextBlock")
-	public void editTextBlock(TextMessage message) {
-		Workspace workspace = workspaceService.getWorkspace(message.getWorkspaceName());
-		workspaceService.editTextBlock(workspace, message.getUser().getId(), message.getBlockId(), message.getText(), message.getMessage());
-		
+	@MessageMapping("/workspace/startEdit")
+	public void startEdit(TextMessage message) {
+		messageTemplate.convertAndSend("/sub/workspace/" + message.getWorkspaceName(), message);
+	}
+	
+	@MessageMapping("/workspace/endEdit")
+	public void endEdit(TextMessage message) {
 		messageTemplate.convertAndSend("/sub/workspace/" + message.getWorkspaceName(), message);
 	}
 }
