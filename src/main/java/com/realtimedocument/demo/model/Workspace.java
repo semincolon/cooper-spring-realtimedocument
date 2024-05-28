@@ -1,34 +1,35 @@
 package com.realtimedocument.demo.model;
 
-import java.util.List;
-
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
-@Document(collection = "workspace")
+@Entity
+@Table(name = "tbl_workspaces")
 public class Workspace {
 
 	@Id
+	@Column(name = "workspace_id")
+	private String id;
+
+	@Column(name = "workspace_name")
 	private String name;
-	private User generator;
-	private List<User> member;
-	private List<String> onlineMembers;
-	private List<TextBlock> textBlocks;
-	
+
+	@JsonIgnore
+	@OneToMany(mappedBy = "workspace", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<WorkspaceDoc> workspaceDocs;
+
 	@Builder
-	public Workspace(String name, User generator, List<User> member, List<String> onlineMembers, List<TextBlock> textBlocks) {
+	public Workspace(String id, String name) {
+		this.id = id;
 		this.name = name;
-		this.generator = generator;
-		this.member = member;
-		this.onlineMembers = onlineMembers;
-		this.textBlocks = textBlocks;
 	}
 }

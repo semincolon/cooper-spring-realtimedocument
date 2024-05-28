@@ -14,17 +14,19 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class RealtimeDocumentController {
 
-	private final UserService userService;
+//	private final UserService userService;
 	
 	@GetMapping("/")
 	public String welcome() {
 		return "main/join";
 	}
-	
-	@PostMapping("/leave")
-	public String leave(@ModelAttribute("userId") String userId) {
-		User user = userService.getUser(userId);
-		userService.deleteUser(user);
-		return "main/leave";
-	}
+
+
+//	@PostMapping("/leave")
+//	public String leave(@ModelAttribute("userId") String userId) {
+//		User user = userService.getUser(userId);
+//		userService.deleteUser(user);
+//		return "main/leave";
+//	}
 }
+

@@ -1,13 +1,12 @@
 package com.realtimedocument.demo.repository;
 
+import com.realtimedocument.demo.model.Doc;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-
-import com.realtimedocument.demo.model.Workspace;
 
 import java.util.List;
 
 @Repository
-public interface WorkspaceRepository extends JpaRepository<Workspace, String> {
-    List<Workspace> findAllByOrderByNameAsc();
+public interface DocRepository extends JpaRepository<Doc, String> {
+    List<Doc> findAllByOrderByNameAsc();
 }
