@@ -6,8 +6,8 @@
     <title>Cooper</title>
     <link rel="stylesheet" type="text/css" th:href="@{/style.css}">
     <script src="/webjars/jquery/jquery.min.js"></script>
-    <script src="/webjars/sockjs-client/sockjs.min.js"></script>
-    <script src="/webjars/stomp-websocket/stomp.min.js"></script>
+    <script src="/webjars/sockjs-client/1.6.1/dist/sockjs.js"></script>
+    <script src="/webjars/stomp-websocket/2.3.4/stomp.js"></script>
 </head>
 <body>
 	<div class=container style="width: 800px">
@@ -110,9 +110,7 @@
 				var content = JSON.parse(frame.body);
 				totalMembers = content.totalMembers;
 				onlineMembers = content.onlineMembers;
-				
-				
-				
+
 				// 블록을 편집하는 경우에는 이 부분을 실행
 				if (content.message == "true" || content.message == "false") {
 					var block = $('#' + content.blockId);	
