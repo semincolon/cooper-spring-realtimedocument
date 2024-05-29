@@ -24,15 +24,31 @@
   * 주고 받는 JSON 형식은 아래와 같다.  
     * 워크스페이스 생성 및 삭제:  
      ```js 
-     {type: "workspace", userId: this.userId, workspaces: result.data, workspaceId: newWorkspace.id}
+     {
+      type: "workspace",
+      userId: this.userId, 
+      workspaces: result.data, 
+      workspaceId: newWorkspace.id
+    }
      ```  
      * 문서 생성  
      ```js  
-     {type: "document", userId: this.userId, documents: result.data, workspaceId: this.selectedWorkspace.id}
+     {
+      type: "document", 
+      userId: this.userId, 
+      documents: result.data, 
+      workspaceId: this.selectedWorkspace.id
+     }
      ```  
      * 문서 삭제  
      ```js  
-     {type: "document", userId: this.userId, documents: result.data, workspaceId: this.selectedWorkspace.id, documentId: documentId}  
+     {
+      type: "document", 
+      userId: this.userId, 
+      documents: result.data, 
+      workspaceId: this.selectedWorkspace.id, 
+      documentId: documentId
+     }  
      ```
 
 * **"/sub/workspace/\${wsId}/document/\${docId}"** : 문서별로 구독하는 경로  
@@ -44,7 +60,12 @@
   * 주고 받는 JSON 형식은 아래와 같다.  
     * 블록 생성("new"), 기존 블록에 텍스트 입력("old"), 블록 삭제("del")  
     ```js
-    {type: "new || old || del", userId: this.userId, block: {id: 블록 id, text: 블록 내 text}, position: index+1}
+    {
+      type: "new || old || del", 
+      userId: this.userId, 
+      block: {id: 블록 id, text: 블록 내 text}, 
+      position: index+1
+    }
     ```  
 
 <br>
