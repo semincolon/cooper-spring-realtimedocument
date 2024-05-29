@@ -46,22 +46,22 @@ public class WorkspaceController {
 
 	//////////////////
 
-	@RequestMapping("/list")
-	public String list(@ModelAttribute User user, Model model) {
-		userService.checkUser(user); // 유저가 있는지 없는지 확인
-		
-		List<Workspace> workspaceList = workspaceService.getWorkspaceList();
-		model.addAttribute("user", user);
-		model.addAttribute("workspaceList", workspaceList);		
-		return "workspace/list";
-	}
-	
-	@PostMapping("/create")
-	public String create(@RequestParam("userId") String userId, Model model) {
-		User user = userService.getUser(userId);
-		model.addAttribute("user", user);
-		return "workspace/create";
-	}
+//	@RequestMapping("/list")
+//	public String list(@ModelAttribute User user, Model model) {
+//		userService.checkUser(user); // 유저가 있는지 없는지 확인
+//
+//		List<Workspace> workspaceList = workspaceService.getWorkspaceList();
+//		model.addAttribute("user", user);
+//		model.addAttribute("workspaceList", workspaceList);
+//		return "workspace/list";
+//	}
+
+//	@PostMapping("/create")
+//	public String create(@RequestParam("userId") String userId, Model model) {
+//		User user = userService.getUser(userId);
+//		model.addAttribute("user", user);
+//		return "workspace/create";
+//	}
 	
 //	@PostMapping("/create-complete")
 //	public String createComplete(@RequestParam("wName") String wName, @RequestParam("userId") String userId, RedirectAttributes rttr) {
