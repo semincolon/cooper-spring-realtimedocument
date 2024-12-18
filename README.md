@@ -1,8 +1,27 @@
+<!-- 프로젝트 제목 -->
 # cooper-real-time-document
-➤ Real-time document like the 'Notion'
+"Notion"처럼 실시간 공유 문서 작성이 가능한 협업 툴
+
+<br>
+
+<!-- 프로젝트 개요 -->
+## 프로젝트 개요  
+<div align="center">
+  <img src="info/images/문서.png">
+</div>
+"Cooper"은 Cooperation의 앞글자로, 실시간 문서 작성이나 채팅 및 음성과 같은 협업을 위한 서비스를 제공하는 협업 툴입니다. 하나의 툴로 다양한 기능을 수행하기 위한 목표로 진행되었습니다. 이 Repository는 실시간 문서에 해당하는 부분입니다.  
+
+### 프로젝트 기간  
+* 2024.04 ~ 2024.06  
+
+### 개발 환경  
+* Spring Boot
+* Java 17
+* IntelliJ  
 
 <br>
  
+<!-- 프로젝트 상세 -->
 ## 전체적인 구조
 * 사용자들은 로그인을 하면 나오는 화면에서 웹소켓 연결(SockJS, Stomp)을 맺는다. 이를 통해 아래와 같은 일들이 이뤄진다.  
   * 워크스페이스의 생성 및 삭제가 실시간으로 동기화 된다.  
